@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CySA+ CS0-003 Portfolio Project Guide</title>
+<meta name="description" content="8 hands-on projects to build your SOC analyst portfolio and pass the CompTIA CySA+ CS0-003 exam. Free, open source, community maintained.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0f1e;--bg2:#0f1628;--bg3:#141d35;--card:#111827;
+  --teal:#00d4aa;--blue:#4a9eff;--purple:#9b8cf8;--coral:#f87171;--amber:#fbbf24;--green:#34d399;
+  --border:#1e2d4a;--border2:#253556;
+  --text:#e2e8f0;--muted:#94a3b8;--faint:#4a5568;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--teal);font-weight:500;text-decoration:none}
+.nav-logo span{color:var(--muted)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:#0a0f1e!important;padding:8px 18px;border-radius:8px;font-weight:600!important;font-size:13px!important}
+.nav-cta:hover{background:#00b894!important;color:#0a0f1e!important}
+
+/* ── HERO ── */
+.hero{position:relative;padding:100px 2rem 80px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,170,.08) 0%, transparent 70%);
+  pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,170,.1);
+  border:1px solid rgba(0,212,170,.25);border-radius:100px;padding:6px 14px;margin-bottom:24px;
+  font-size:13px;color:var(--teal);font-weight:500;font-family:var(--mono)}
+.hero-badge::before{content:'';width:8px;height:8px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;margin-bottom:20px;max-width:800px;margin-inline:auto}
+.hero h1 .accent{background:linear-gradient(135deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:600px;margin:0 auto 36px;line-height:1.8}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;transition:all .2s;cursor:pointer;border:none}
+.btn-primary{background:var(--teal);color:#0a0f1e}
+.btn-primary:hover{background:#00b894;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-secondary:hover{border-color:var(--teal);color:var(--teal)}
+.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:60px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:2rem;font-weight:700;color:var(--teal);font-family:var(--mono)}
+.stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* ── GRID LAYOUT ── */
+.section{padding:80px 2rem}
+.container{max-width:1100px;margin:auto}
+.section-label{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin-bottom:12px;letter-spacing:-.02em}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:600px;margin-bottom:48px}
+
+/* ── PROJECT CARDS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .25s;position:relative;overflow:hidden}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.project-card.ops::before{background:linear-gradient(90deg,var(--teal),var(--blue))}
+.project-card.vuln::before{background:linear-gradient(90deg,var(--purple),#c084fc)}
+.project-card.ir::before{background:linear-gradient(90deg,var(--coral),var(--amber))}
+.project-card.report::before{background:linear-gradient(90deg,var(--amber),var(--green))}
+.project-card.all::before{background:linear-gradient(90deg,var(--teal),var(--purple),var(--coral))}
+.project-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.project-num{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:10px}
+.project-title{font-size:1.05rem;font-weight:600;margin-bottom:10px;line-height:1.4}
+.project-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.project-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px;letter-spacing:.02em}
+.tag-ops{background:rgba(0,212,170,.12);color:var(--teal);border:1px solid rgba(0,212,170,.25)}
+.tag-vuln{background:rgba(155,140,248,.12);color:var(--purple);border:1px solid rgba(155,140,248,.25)}
+.tag-ir{background:rgba(248,113,113,.12);color:var(--coral);border:1px solid rgba(248,113,113,.25)}
+.tag-report{background:rgba(251,191,36,.12);color:var(--amber);border:1px solid rgba(251,191,36,.25)}
+.tag-diff-b{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.25)}
+.tag-diff-i{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.25)}
+.tag-diff-a{background:rgba(248,113,113,.1);color:var(--coral);border:1px solid rgba(248,113,113,.25)}
+.tag-time{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border)}
+
+/* ── DOMAIN LEGEND ── */
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+
+/* ── RESOURCES ── */
+.resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.res-group{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.res-group-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;font-family:var(--mono)}
+.res-link{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:all .2s}
+.res-link:last-child{border-bottom:none;padding-bottom:0}
+.res-link:hover .res-name{color:var(--teal)}
+.res-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.res-name{font-size:14px;font-weight:500;color:var(--text);line-height:1.3}
+.res-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+.free-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.3);margin-left:6px;vertical-align:middle}
+
+/* ── DOWNLOAD SECTION ── */
+.download-card{background:linear-gradient(135deg,rgba(0,212,170,.08),rgba(74,158,255,.08));border:1px solid rgba(0,212,170,.2);border-radius:20px;padding:48px;text-align:center}
+.download-card h2{font-size:1.8rem;font-weight:700;margin-bottom:12px}
+.download-card p{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.download-meta{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.download-meta-item{font-size:13px;color:var(--muted)}
+.download-meta-item strong{color:var(--text)}
+
+/* ── EXAM INFO ── */
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:32px}
+.exam-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.exam-card-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:var(--mono)}
+.exam-card-value{font-size:1.1rem;font-weight:600;color:var(--text)}
+.exam-card-sub{font-size:12px;color:var(--faint);margin-top:4px}
+
+/* ── DOMAIN BREAKDOWN BAR ── */
+.domain-bar{margin:32px 0}
+.domain-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.domain-name{width:200px;font-size:13px;color:var(--text);flex-shrink:0}
+.domain-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.domain-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.domain-pct{width:36px;font-size:12px;color:var(--muted);text-align:right;font-family:var(--mono)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:40px 2rem;text-align:center;color:var(--faint);font-size:14px}
+footer a{color:var(--teal);text-decoration:none}
+footer a:hover{text-decoration:underline}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#"><span>~/</span>cysa-project-guide</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#exam">Exam info</a></li>
+      <li><a href="guide.pdf" download class="nav-cta">⬇ Download PDF</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">CompTIA CySA+ CS0-003</div>
+  <h1>Build your <span class="accent">SOC analyst</span><br>portfolio from scratch</h1>
+  <p>8 hands-on projects with step-by-step setup guides, real scripts, and GitHub deliverables. Everything you need to prep for CySA+ and land your first security role.</p>
+  <div class="hero-actions">
+    <a href="guide.pdf" download class="btn btn-primary">⬇ Download free PDF guide</a>
+    <a href="#projects" class="btn btn-secondary">Browse projects →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Hands-on projects</div></div>
+    <div class="stat"><div class="stat-num">35</div><div class="stat-label">Page PDF guide</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free & open source</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">CySA+ domains covered</div></div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="container">
+    <div class="section-label">Portfolio projects</div>
+    <h2 class="section-title">8 projects. All 4 exam domains.</h2>
+    <p class="section-sub">Each project maps directly to CS0-003 exam objectives. Build them, push to GitHub, and walk into interviews with working code.</p>
+
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--teal)"></span>Security ops (33%)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span>Vuln mgmt (30%)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--coral)"></span>Incident response (20%)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Reporting (17%)</span>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card ops">
+        <div class="project-num">01 / 08</div>
+        <div class="project-title">Wazuh SIEM home lab</div>
+        <div class="project-desc">Deploy a full open-source SIEM/XDR stack, write custom detection rules, simulate attacks, and document alert triage. Industry-grade — real SOCs run Wazuh.</div>
+        <div class="project-meta">
+          <span class="tag tag-ops">Security ops</span>
+          <span class="tag tag-ir">Incident response</span>
+          <span class="tag tag-diff-i">Intermediate</span>
+          <span class="tag tag-time">2–3 weeks</span>
+        </div>
+      </div>
+
+      <div class="project-card vuln">
+        <div class="project-num">02 / 08</div>
+        <div class="project-title">Vuln scan & remediation pipeline</div>
+        <div class="project-desc">Nessus Essentials (free) against Metasploitable VMs. Prioritize CVEs by CVSS, write remediation reports, and automate triage with Python.</div>
+        <div class="project-meta">
+          <span class="tag tag-vuln">Vuln mgmt</span>
+          <span class="tag tag-diff-b">Beginner</span>
+          <span class="tag tag-time">1–2 weeks</span>
+        </div>
+      </div>
+
+      <div class="project-card ops">
+        <div class="project-num">03 / 08</div>
+        <div class="project-title">Phishing triage CLI tool</div>
+        <div class="project-desc">Python CLI that parses email headers, extracts IOCs, queries the VirusTotal API, and outputs a structured analyst report. Ships to GitHub day one.</div>
+        <div class="project-meta">
+          <span class="tag tag-ops">Security ops</span>
+          <span class="tag tag-ir">Incident response</span>
+          <span class="tag tag-diff-b">Beginner</span>
+          <span class="tag tag-time">1 week</span>
+        </div>
+      </div>
+
+      <div class="project-card ops">
+        <div class="project-num">04 / 08</div>
+        <div class="project-title">Threat hunt: BOTS v3 dataset</div>
+        <div class="project-desc">Load a real APT attack dataset into Splunk and hunt adversary activity across kill chain stages. Write hunt reports exactly like a SOC analyst. Employers love this one.</div>
+        <div class="project-meta">
+          <span class="tag tag-ops">Security ops</span>
+          <span class="tag tag-diff-i">Intermediate</span>
+          <span class="tag tag-time">2–3 weeks</span>
+        </div>
+      </div>
+
+      <div class="project-card ops">
+        <div class="project-num">05 / 08</div>
+        <div class="project-title">Malware traffic analysis (pcap)</div>
+        <div class="project-desc">Analyze real malware pcap files from malware-traffic-analysis.net. Extract IOCs with Wireshark + Zeek, map to ATT&CK, write weekly analyst reports.</div>
+        <div class="project-meta">
+          <span class="tag tag-ops">Security ops</span>
+          <span class="tag tag-vuln">Vuln mgmt</span>
+          <span class="tag tag-diff-b">Beginner</span>
+          <span class="tag tag-time">Ongoing</span>
+        </div>
+      </div>
+
+      <div class="project-card ir">
+        <div class="project-num">06 / 08</div>
+        <div class="project-title">Forensic investigation lab</div>
+        <div class="project-desc">Memory and disk forensics with Volatility 3 and Autopsy. Reconstruct attacker timelines on compromised images. Write formal forensic reports. Most candidates skip this — don't.</div>
+        <div class="project-meta">
+          <span class="tag tag-ir">Incident response</span>
+          <span class="tag tag-diff-a">Advanced</span>
+          <span class="tag tag-time">3–4 weeks</span>
+        </div>
+      </div>
+
+      <div class="project-card all">
+        <div class="project-num">07 / 08</div>
+        <div class="project-title">TryHackMe SOC Level 1 path</div>
+        <div class="project-desc">Guided, browser-based rooms covering every CySA+ domain — SIEM, threat hunting, IR, phishing, vuln mgmt. Zero lab setup. Run alongside the Udemy course.</div>
+        <div class="project-meta">
+          <span class="tag tag-ops">Security ops</span>
+          <span class="tag tag-ir">Incident response</span>
+          <span class="tag tag-report">Reporting</span>
+          <span class="tag tag-diff-b">Beginner</span>
+          <span class="tag tag-time">4–6 weeks</span>
+        </div>
+      </div>
+
+      <div class="project-card report">
+        <div class="project-num">08 / 08</div>
+        <div class="project-title">Security metrics dashboard</div>
+        <div class="project-desc">Python Dash web app that visualizes vuln trends, patch compliance, and alert metrics. Deploy live on Render.com (free). Shows both security knowledge and engineering ability.</div>
+        <div class="project-meta">
+          <span class="tag tag-report">Reporting</span>
+          <span class="tag tag-vuln">Vuln mgmt</span>
+          <span class="tag tag-diff-i">Intermediate</span>
+          <span class="tag tag-time">2–3 weeks</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:32px;text-align:center">
+      <a href="guide.pdf" download class="btn btn-primary">Get the full step-by-step PDF guide ⬇</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg2)" id="resources">
+  <div class="container">
+    <div class="section-label">Curated resources</div>
+    <h2 class="section-title">Everything you need to study</h2>
+    <p class="section-sub">Free and paid resources to prep for CS0-003. Start with the free ones, add Udemy when you're ready to go deeper.</p>
+
+    <div class="resources-grid">
+
+      <div class="res-group">
+        <div class="res-group-title">📺  Free video courses</div>
+
+        <a class="res-link" href="https://www.youtube.com/playlist?list=PLMYSjEaGLw_vGxGsAIUgmkbEm52QR02tx" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(255,0,0,.1)">▶</div>
+          <div>
+            <div class="res-name">Professor Messer CySA+ CS0-003 <span class="free-badge">FREE</span></div>
+            <div class="res-desc">Full video course covering all four domains. Professor Messer is the gold standard for CompTIA prep. Start here.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://tryhackme.com/path/outline/soclevel1" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(0,212,170,.1)">🎯</div>
+          <div>
+            <div class="res-name">TryHackMe SOC Level 1 Path <span class="free-badge">FREE TIER</span></div>
+            <div class="res-desc">Guided rooms covering every CySA+ domain. Browser-based, no VM setup. The best way to get hands-on fast.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://www.cybrary.it/course/comptia-cysa-plus" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(74,158,255,.1)">🎓</div>
+          <div>
+            <div class="res-name">Cybrary CySA+ <span class="free-badge">FREE TIER</span></div>
+            <div class="res-desc">Video instruction plus virtual labs. Free tier gives you core content.</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="res-group">
+        <div class="res-group-title">🎓  Paid courses (worth it)</div>
+
+        <a class="res-link" href="https://www.udemy.com/course/comptia-cysa-003/" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(155,140,248,.1)">⭐</div>
+          <div>
+            <div class="res-name">Jason Dion — CySA+ CS0-003 (Udemy)</div>
+            <div class="res-desc">Best-selling CySA+ course. CompTIA Platinum Delivery Partner. Includes a full 90-question practice exam and PDF study guide. Wait for a Udemy sale ($15–20).</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://www.professormesser.com/cysa-plus/cs0-003/cs0-003-video/cs0-003-comptia-cysa-plus-course-1/" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(251,191,36,.1)">📚</div>
+          <div>
+            <div class="res-name">Professor Messer Study Groups</div>
+            <div class="res-desc">Practice exams and study groups from Professor Messer. Pairs perfectly with his free videos.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://www.udemy.com/course/comptia-pentest-pt0-003-6-practice-exams/" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(248,113,113,.1)">🔴</div>
+          <div>
+            <div class="res-name">Jason Dion — PenTest+ PT0-003 (Udemy)</div>
+            <div class="res-desc">If you want offensive security instead of defensive. Also renews Security+ automatically on passing.</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="res-group">
+        <div class="res-group-title">🧪  Practice labs & datasets</div>
+
+        <a class="res-link" href="https://cyberdefenders.org" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(0,212,170,.1)">🛡</div>
+          <div>
+            <div class="res-name">CyberDefenders <span class="free-badge">FREE</span></div>
+            <div class="res-desc">Blue team CTF challenges. Pcap files, disk images, memory dumps. Great for Projects 5 and 6.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://github.com/splunk/botsv3" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(74,158,255,.1)">📊</div>
+          <div>
+            <div class="res-name">Splunk BOTS v3 Dataset <span class="free-badge">FREE</span></div>
+            <div class="res-desc">Real APT attack dataset used in Splunk's competition. Essential for Project 4 threat hunting.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://malware-traffic-analysis.net" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(248,113,113,.1)">🦠</div>
+          <div>
+            <div class="res-name">malware-traffic-analysis.net <span class="free-badge">FREE</span></div>
+            <div class="res-desc">Real malware pcap files with answer keys. Use for Project 5. Password for zip files: infected.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://github.com/stuxnet999/MemLabs" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(155,140,248,.1)">🧠</div>
+          <div>
+            <div class="res-name">MemLabs <span class="free-badge">FREE</span></div>
+            <div class="res-desc">6 free memory forensics challenges. Use with Volatility 3 for Project 6.</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="res-group">
+        <div class="res-group-title">📖  Reference material</div>
+
+        <a class="res-link" href="https://attack.mitre.org" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(74,158,255,.1)">🗺</div>
+          <div>
+            <div class="res-name">MITRE ATT&CK Framework <span class="free-badge">FREE</span></div>
+            <div class="res-desc">Map every attack you find to ATT&CK TTPs. Essential for all 8 projects and the exam itself.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://documentation.wazuh.com" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(0,212,170,.1)">📝</div>
+          <div>
+            <div class="res-name">Wazuh Documentation <span class="free-badge">FREE</span></div>
+            <div class="res-desc">Official docs for Project 1. The rules reference and API docs are especially useful.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://www.comptia.org/certifications/cybersecurity-analyst" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(251,191,36,.1)">🏆</div>
+          <div>
+            <div class="res-name">CompTIA Official CySA+ Page</div>
+            <div class="res-desc">Official exam objectives PDF, exam voucher, and renewal information. Download the objectives and keep them open while studying.</div>
+          </div>
+        </a>
+
+        <a class="res-link" href="https://ce.comptia.org" target="_blank" rel="noopener">
+          <div class="res-icon" style="background:rgba(52,211,153,.1)">🔄</div>
+          <div>
+            <div class="res-name">CompTIA CE Portal</div>
+            <div class="res-desc">Log your CEUs for Security+ renewal. Every hour of these projects = 1 CEU (need 50 total).</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="exam">
+  <div class="container">
+    <div class="section-label">Exam overview</div>
+    <h2 class="section-title">CySA+ CS0-003 at a glance</h2>
+    <p class="section-sub">Know what you're walking into. This is an intermediate certification — expect scenario-based questions and performance-based simulations.</p>
+
+    <div class="exam-grid">
+      <div class="exam-card">
+        <div class="exam-card-label">Exam code</div>
+        <div class="exam-card-value">CS0-003</div>
+        <div class="exam-card-sub">Current version</div>
+      </div>
+      <div class="exam-card">
+        <div class="exam-card-label">Questions</div>
+        <div class="exam-card-value">Up to 85</div>
+        <div class="exam-card-sub">MCQ + performance-based</div>
+      </div>
+      <div class="exam-card">
+        <div class="exam-card-label">Time limit</div>
+        <div class="exam-card-value">165 min</div>
+        <div class="exam-card-sub">2 hours 45 minutes</div>
+      </div>
+      <div class="exam-card">
+        <div class="exam-card-label">Passing score</div>
+        <div class="exam-card-value">750 / 900</div>
+        <div class="exam-card-sub">≈ 83%</div>
+      </div>
+      <div class="exam-card">
+        <div class="exam-card-label">Exam cost</div>
+        <div class="exam-card-value">~$369</div>
+        <div class="exam-card-sub">Prof. Messer voucher: $379</div>
+      </div>
+      <div class="exam-card">
+        <div class="exam-card-label">Renews Security+</div>
+        <div class="exam-card-value">Yes</div>
+        <div class="exam-card-sub">Automatically, fee waived</div>
+      </div>
+    </div>
+
+    <div class="domain-bar" style="margin-top:40px">
+      <h3 style="margin-bottom:20px;font-size:1rem;color:var(--muted);font-weight:500">Exam domain weights</h3>
+      <div class="domain-row">
+        <div class="domain-name"><span class="tag tag-ops" style="font-size:12px">Security operations</span></div>
+        <div class="domain-track"><div class="domain-fill" style="width:33%;background:var(--teal)"></div></div>
+        <div class="domain-pct">33%</div>
+      </div>
+      <div class="domain-row">
+        <div class="domain-name"><span class="tag tag-vuln" style="font-size:12px">Vulnerability mgmt</span></div>
+        <div class="domain-track"><div class="domain-fill" style="width:30%;background:var(--purple)"></div></div>
+        <div class="domain-pct">30%</div>
+      </div>
+      <div class="domain-row">
+        <div class="domain-name"><span class="tag tag-ir" style="font-size:12px">Incident response</span></div>
+        <div class="domain-track"><div class="domain-fill" style="width:20%;background:var(--coral)"></div></div>
+        <div class="domain-pct">20%</div>
+      </div>
+      <div class="domain-row">
+        <div class="domain-name"><span class="tag tag-report" style="font-size:12px">Reporting & comms</span></div>
+        <div class="domain-track"><div class="domain-fill" style="width:17%;background:var(--amber)"></div></div>
+        <div class="domain-pct">17%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="download-card">
+      <h2>Get the complete project guide</h2>
+      <p>35 pages. All 8 projects. Step-by-step setup, full scripts, GitHub structures, and exam objective mapping. Free, always.</p>
+      <a href="guide.pdf" download class="btn btn-primary" style="font-size:16px;padding:16px 32px">⬇ Download PDF guide — free</a>
+      <div class="download-meta">
+        <span class="download-meta-item"><strong>35</strong> pages</span>
+        <span class="download-meta-item"><strong>8</strong> complete projects</span>
+        <span class="download-meta-item"><strong>100%</strong> free</span>
+        <span class="download-meta-item">No email required</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/josecoss-dev/cysa-project-guide" target="_blank">GitHub</a>
+    <a href="https://www.comptia.org/certifications/cybersecurity-analyst" target="_blank">Official CySA+ page</a>
+    <a href="https://attack.mitre.org" target="_blank">MITRE ATT&CK</a>
+    <a href="https://tryhackme.com/path/outline/soclevel1" target="_blank">TryHackMe SOC Level 1</a>
+    <a href="guide.pdf" download>Download PDF</a>
+  </div>
+  <p>Open source and community maintained · <a href="https://github.com/josecoss-dev/cysa-project-guide">josecoss-dev/cysa-project-guide</a></p>
+  <p style="margin-top:8px;font-size:12px">Not affiliated with CompTIA · All resources linked are the property of their respective owners</p>
+</footer>
+
+</body>
+</html>
